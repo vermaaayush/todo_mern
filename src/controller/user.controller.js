@@ -227,12 +227,10 @@ const update_password = asyncHandler ( async (req, res)=>{
       const {old_pass, new_pass} =req.body
 
       console.log("Received fields:", {  old_pass, new_pass });
-      console.log(req.user);
-      
+        
       const user = await User.findById(req.user?._id)
       
-      console.log(user);
-      
+    
       const check_pass = await user.isPasswordCorrect(old_pass)
 
       if (!check_pass) {
