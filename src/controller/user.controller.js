@@ -109,6 +109,8 @@ const loginUser = asyncHandler ( async (req,res)=>{
         }
  
         const user = await User.findOne(req.email)
+        console.log(user);
+        
         if (!user ) {
           throw new ApiErrors(400, "User Not Found!");
         }
@@ -245,4 +247,39 @@ const update_password = asyncHandler ( async (req, res)=>{
       .json(new ApiResponse(200, {}, "Password Changed Successfully"))
 })
 
-export {registerUser, loginUser, logoutUser, currect_user, refreshAccessToken, update_password}
+const profile_update = asyncHandler ( async (req,res)=>{
+  const {fullname} =req.body
+
+  const avatarlocalpath = req.files?.path
+  
+  if (!avatarlocalpath) {
+    throw new ApiErrors(400,"Avatar files are missing")
+  }
+  
+  console.log("Received fields:", {  fullname });
+
+  const user = await User.findById(req.user?._id)
+  user.fullname = fullname
+  await user.save({validateBeforeSave:false})
+
+  
+  const avatar = await uploadonCloudinary(avatarlocalpath)
+  if (!avatar.url) {
+    throw new ApiErrors(400,"API error while uploading avatar")
+ }
+  const user2 = await User.findByIdAndUpdate(req.user?._id,
+    {
+       $set:{
+          avatart: avatar.url,
+          
+       }
+    },
+    {new: true}
+ ).select("-password")
+  
+ return res
+   .status(200)
+   .json(200,user,"Account Details Updated")
+})
+
+export {registerUser, loginUser, logoutUser, currect_user, refreshAccessToken, update_password, profile_update}
