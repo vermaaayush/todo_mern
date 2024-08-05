@@ -60,6 +60,14 @@ const updateTodo = asyncHandler ( async(req, res)=>{
       fetched_db_todo.description=description
       await fetched_db_todo.save()
 
+      //other syntex
+
+    //   const updatedTodo = await Todo.findByIdAndUpdate(
+    //     todo_id,
+    //     { title, description },
+    //     { new: true, runValidators: true } // new: true returns the updated document, runValidators ensures the update is validated against the schema
+    //   );
+
       return res
       .status(200)
       .json(new ApiResponse(200, {}, "Todo Updated Successfully"))
