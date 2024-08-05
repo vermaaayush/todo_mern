@@ -82,4 +82,19 @@ const updateTodo = asyncHandler ( async(req, res)=>{
 
 })
 
-export {test, createTodo, updateTodo}
+const allTodo = asyncHandler ( async(req, res)=>{
+    
+    const all_todos = await Todo.find({ ownerId: req.user?._id });
+
+    if (all_todos.length === 0) 
+    {
+        return res.status(404).json(new ApiResponse(404, {}, "No todos found for this user"));
+    }
+
+    return res
+      .status(200)
+      .json(new ApiResponse(200, all_todos, "Todos fetched successfully"));
+
+})
+
+export {test, createTodo, updateTodo, allTodo}
