@@ -267,7 +267,7 @@ const profile_update = asyncHandler ( async (req,res)=>{
   if (!avatar.url) {
     throw new ApiErrors(400,"API error while uploading avatar")
  }
-  const user2 = await User.findByIdAndUpdate(req.user?._id,
+  const user2 = await User.AndUpdate(req.user?._id,
     {
        $set:{
           avatart: avatar.url,

@@ -1,6 +1,6 @@
 import mongoose, {Schema} from "mongoose";
 // import jwt from "jsonwebtoken"
-import bcrypt from "bcrypt"
+
 
 const todoSchema = new Schema (
     {
@@ -17,9 +17,8 @@ const todoSchema = new Schema (
             type: String,
             default: 'true'
           },
-          userId: {
-            type: Schema.Types.ObjectId,
-            ref: 'User',
+          ownerId: {
+            type: String,
             required: true
           },
     },

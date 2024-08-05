@@ -20,8 +20,9 @@ app.use(cookieParser())
 
 
 import userRouter from "./routes/user.route.js"
+import todoRouter from "./routes/todo.route.js"
 
 app.use("/users",userRouter)
-
+app.use("/todo",todoRouter)
 
 export {app}
