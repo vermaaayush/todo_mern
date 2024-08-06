@@ -10,7 +10,7 @@ const todoSchema = new Schema (
             trim: true
           },
           description: {
-            type: String,
+            type: String,    
             trim: true
           },
           status: {
@@ -28,3 +28,5 @@ const todoSchema = new Schema (
 )
 
 export const Todo = mongoose.model("Todo",todoSchema)
+
+

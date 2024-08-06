@@ -84,8 +84,9 @@ const updateTodo = asyncHandler ( async(req, res)=>{
 
 const allTodo = asyncHandler ( async(req, res)=>{
     
-    const all_todos = await Todo.find({ ownerId: req.user?._id });
-
+    const all_todos = await Todo.find({ ownerId: req.user?._id, status: true });
+    console.log(all_todos);
+    
     if (all_todos.length === 0) 
     {
         return res.status(404).json(new ApiResponse(404, {}, "No todos found for this user"));
@@ -94,6 +95,23 @@ const allTodo = asyncHandler ( async(req, res)=>{
     return res
       .status(200)
       .json(new ApiResponse(200, all_todos, "Todos fetched successfully"));
+
+})
+
+
+const trashTodo = asyncHandler ( async(req, res)=>{
+    
+  const all_todos = await Todo.find({ ownerId: req.user?._id, status: false });
+  console.log(all_todos);
+  
+  if (all_todos.length === 0) 
+  {
+      return res.status(404).json(new ApiResponse(404, {}, "No todos found for this user"));
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, all_todos, "Todos fetched successfully"));
 
 })
 
@@ -108,14 +126,94 @@ const deleteTodo = asyncHandler ( async(req, res)=>{
     if (!todoExists) {
         throw new ApiErrors(400, "Todo not found");
     }
-
+     
+    todoExists.status = 'false'
+    todoExists.save()
     
-    const deletedTodo = await Todo.findByIdAndDelete(todo_id);
-
+    
     return res
       .status(200)
       .json(new ApiResponse(200, {}, "Todos deleted successfully"));
 
 })
 
-export {test, createTodo, updateTodo, allTodo, deleteTodo}
+const deletetrashTodo = asyncHandler ( async(req, res)=>{
+    
+  const {xx} = req.params
+  const todo_id = String(xx);
+  console.log(todo_id);
+  
+  const todoExists = await Todo.findById(todo_id);
+
+  if (!todoExists) {
+      throw new ApiErrors(400, "Todo not found");
+  }
+
+  
+  await Todo.findByIdAndDelete(todo_id);
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, {}, "Todos deleted successfully"));
+
+})
+
+const shareTodo = asyncHandler ( async(req, res)=>{
+    
+    const {todo_id} = req.params
+    const todoId = String(todo_id);
+    const {receive_userID} =req.body
+    // console.log("Received fields:", { receive_userID });
+    // console.log(todoId);
+    
+    const todoExists = await Todo.findById(todoId);
+
+    if (!todoExists) {
+        throw new ApiErrors(400, "Todo not found");
+    }
+
+    const userExists = await User.findById(receive_userID);
+
+    if (!userExists) {
+        throw new ApiErrors(400, "Invalid User Id");
+    }
+
+    const cloneTodo = await Todo.create({
+        title:todoExists.title,
+        description: todoExists.description,
+        ownerId: receive_userID,
+    })
+
+    
+   
+
+    return res
+      .status(200)
+      .json(new ApiResponse(200, cloneTodo, "Todo shared successfully"));
+
+})
+
+
+const retr_todo = asyncHandler ( async(req, res)=>{
+    
+    const {todo_id} = req.params
+    const todoId = String(todo_id);
+    console.log(todoId);
+    
+    const todoExists = await Todo.findById(todoId);
+
+    if (!todoExists) {
+        throw new ApiErrors(400, "Todo not found");
+    }
+
+    todoExists.status = true
+    todoExists.save()
+    
+   
+    return res
+      .status(200)
+      .json(new ApiResponse(200, todoExists.status, "Todo retreive successfully"));
+
+})
+
+export {test, createTodo, updateTodo, allTodo, deleteTodo, shareTodo, trashTodo, deletetrashTodo, retr_todo}
