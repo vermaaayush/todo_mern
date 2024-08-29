@@ -86,6 +86,7 @@ const allTodo = asyncHandler ( async(req, res)=>{
     
     const all_todos = await Todo.find({ ownerId: req.user?._id, status: true });
     console.log(all_todos);
+    console.log(req.user?._id);
     
     if (all_todos.length === 0) 
     {

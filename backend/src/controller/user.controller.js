@@ -43,8 +43,8 @@ const registerUser = asyncHandler( async (req,res) => {
     // return response 
 
     const {fullname, email, username, password} = req.body
-    console.log("Received fields:", { fullname, email, username, password });
-    if (!fullname || !email || !username || !password ) {
+    console.log("Received fields:", { fullname, email, password });
+    if (!fullname || !email || !password ) {
       throw new ApiErrors(400, "All fields are required");
     }
   
@@ -69,13 +69,15 @@ const registerUser = asyncHandler( async (req,res) => {
    const avatar= await uploadonCloudinary(avatar_file)
 
     // console.log(avatar);
+   const  generateRandomUsername = () => `User${Math.random().toString(36).substr(2, 8)}`;
+    
     
    const user =await User.create({
     fullname,
     email,
     avatar:avatar.url,
     password,
-    username,
+    username:generateRandomUsername(),
     })
 
    const created_user = await User.findById(user._id).select("-password -refreshToken")
@@ -110,18 +112,19 @@ const loginUser = asyncHandler ( async (req,res)=>{
           throw new ApiErrors(400, "Email or Password is required");
         }
  
-        const user = await User.findOne(req.email)
+        const user = await User.findOne({email})
         console.log(user);
         
+        
         if (!user ) {
-          throw new ApiErrors(400, "User Not Found!");
+          throw new ApiErrors(401, "User Not Found!");
         }
 
         const validate_password = await user.isPasswordCorrect(password)
         console.log(validate_password);
         
         if (!validate_password ) {
-          throw new ApiErrors(400, "Incorrect Password!");
+          throw new ApiErrors(402, "Incorrect Password!");
         }
 
         const {Access_t, Refresh_t} = await generateAccessAndRefreshTokens(user._id.toString())
