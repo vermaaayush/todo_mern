@@ -1,21 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { setUser } from '../../slice/userSlice';
 
 const Login = () => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const userx = useSelector((state) => state.user);
+     
+    useEffect(() => {
+      console.log(userx); // This will log the updated user state when it changes
+    }, [userx]);
+
 
     const [Input, setInput] = useState({
         email: "",
         password: "",
        
       })
-
-    const navigate = useNavigate();  
-
-
 
     const change = (e) =>
     {
@@ -35,11 +41,16 @@ const Login = () => {
             const response = await axios.post("http://localhost:3000/users/login", Input, {
               withCredentials: true,
             });
+
             
-            console.log(response.data);
+            
+            dispatch(setUser(response.data.data.user));
+
+            console.log(response.data.data.user);
+
+            
             //shwoing notification
             toast.success("User Login successfull!");
-
            
             
             navigate("/dashboard")
@@ -75,7 +86,7 @@ const Login = () => {
 <div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
 <ToastContainer />
   <div className="mx-auto max-w-lg">
-    <h1 className="text-center text-2xl font-bold text-indigo-600 sm:text-3xl">Get started today</h1>
+    <h1 className="text-center text-2xl font-bold text-orange-600 sm:text-3xl">Get started today</h1>
 
    
     <form action="#" className="mb-0 mt-6 space-y-4 rounded-lg p-4 shadow-lg sm:p-6 lg:p-8">
@@ -113,7 +124,7 @@ const Login = () => {
       <button
         onClick={submit} 
         type="submit"
-        className="block w-full rounded-lg bg-indigo-600 px-5 py-3 text-sm font-medium text-white"
+        className="block w-full rounded-lg bg-orange-600 px-5 py-3 text-sm font-medium text-white"
       >
         Sign in
       </button>

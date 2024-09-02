@@ -63,7 +63,7 @@ const Register = () => {
 
 <div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
   <div className="mx-auto max-w-lg">
-    <h1 className="text-center text-2xl font-bold text-indigo-600 sm:text-3xl">Get started today</h1>
+    <h1 className="text-center text-2xl font-bold text-orange-600 sm:text-3xl">Get started today</h1>
 
   
     <form action="#" className="mb-0 mt-6 space-y-4 rounded-lg p-4 shadow-lg sm:p-6 lg:p-8">
@@ -127,7 +127,7 @@ const Register = () => {
 
       <button
         type="submit"
-        onClick={submit}  className="block w-full rounded-lg bg-indigo-600 px-5 py-3 text-sm font-medium text-white"
+        onClick={submit}  className="block w-full rounded-lg bg-orange-600 px-5 py-3 text-sm font-medium text-white"
       >
         Sign up
       </button>

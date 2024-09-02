@@ -1,14 +1,21 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
+function stripHTMLTags(html) {
+  const div = document.createElement("div");
+  div.innerHTML = html;
+  const text = div.textContent || div.innerText || "";
+  return text.slice(0, 30); // Return only the first 100 characters
+}
+
 const TodoCard = ({ todo }) => {
   return (
     <Link
-  to="#"
+    to={`/view-todo/${todo._id}`}
   className="relative block overflow-hidden rounded-lg border border-gray-100 p-4 sm:p-6 lg:p-8"
 >
   <span
-    className="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-r from-green-300 via-blue-500 to-purple-600"
+    className="absolute inset-x-0 bottom-0 h-2 bg-orange-600"
   ></span>
 
   <div className="sm:flex sm:justify-between sm:gap-4">
@@ -24,7 +31,7 @@ const TodoCard = ({ todo }) => {
 
   <div className="mt-4">
     <p className="text-pretty text-sm text-gray-500">
-    { todo.description }
+    {stripHTMLTags(todo.description)} <br /> ......
     </p>
   </div>
 

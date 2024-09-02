@@ -217,4 +217,26 @@ const retr_todo = asyncHandler ( async(req, res)=>{
 
 })
 
-export {test, createTodo, updateTodo, allTodo, deleteTodo, shareTodo, trashTodo, deletetrashTodo, retr_todo}
+
+const view_todo = asyncHandler ( async(req, res)=>{
+    
+    const {todo_id} = req.params
+    const todoId = String(todo_id);
+ 
+    
+    const viewtodo = await Todo.findById(todoId);
+
+    if (!viewtodo) {
+        throw new ApiErrors(400, "Todo not found");
+    }
+    
+   
+    return res
+      .status(200)
+      .json(new ApiResponse(200, viewtodo, "Todo retreive successfully"));
+ 
+
+    
+})
+
+export {test, createTodo, updateTodo, allTodo, deleteTodo, shareTodo, trashTodo, deletetrashTodo, retr_todo, view_todo}
