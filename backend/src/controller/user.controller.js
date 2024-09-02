@@ -133,7 +133,8 @@ const loginUser = asyncHandler ( async (req,res)=>{
 
         const options ={
           httpOnly: true,
-          secure :true
+          secure :true,
+          sameSite: 'Lax', 
         }
 
         return res.status(200)
@@ -148,6 +149,8 @@ const loginUser = asyncHandler ( async (req,res)=>{
             "User logged in successfully!"
           )
         )
+       
+        
 })
 
 const logoutUser = asyncHandler( async (req,res)=>{

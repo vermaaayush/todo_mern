@@ -29,6 +29,7 @@ const Dashboard = () => {
             const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/todo/allTodo`,{
                 withCredentials: true,
             });
+            
             dispatch(setTodo(response.data.data));
             
             if (!toastShownRef.current && user.user?.fullname) {
