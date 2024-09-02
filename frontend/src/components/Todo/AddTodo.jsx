@@ -34,7 +34,7 @@ const AddTodo = () => {
       };
 
       // Replace with your API endpoint
-      await axios.post('http://localhost:3000/todo/createTodo', todoData, {
+      await axios.post('https://easydoc-backend.onrender.com/todo/createTodo', todoData, {
         withCredentials: true,
       });
     

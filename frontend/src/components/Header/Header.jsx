@@ -18,7 +18,7 @@ const Header = () => {
     try {
      
 
-      const response = await axios.post("http://localhost:3000/users/logout", {}, {
+      const response = await axios.post("https://easydoc-backend.onrender.com/users/logout", {}, {
         withCredentials: true,
       });
 

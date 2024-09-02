@@ -57,7 +57,7 @@ const TodoView = () => {
   useEffect(() => {
     const fetchTodo = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/todo/view_todo/${id}`,{
+        const response = await axios.get(`https://easydoc-backend.onrender.com/todo/view_todo/${id}`,{
             withCredentials: true,
         });
        
@@ -101,7 +101,7 @@ const TodoView = () => {
       <button
         onClick={async () => {
           try {
-            await axios.post(`http://localhost:3000/todo/updateTodo/${id}`, todo,{
+            await axios.post(`https://easydoc-backend.onrender.com/todo/updateTodo/${id}`, todo,{
               withCredentials: true,
             }); // Update the Todo
          
@@ -124,7 +124,7 @@ const TodoView = () => {
       <button onClick={ async () =>{
          try {
 
-          await axios.delete(`http://localhost:3000/todo/deleteTodo/${id}`, todo);
+          await axios.delete(`https://easydoc-backend.onrender.com/todo/deleteTodo/${id}`, todo);
                 
          
           navigate('/dashboard', { replace: true });

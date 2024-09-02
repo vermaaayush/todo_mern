@@ -28,9 +28,9 @@ const Profile = () => {
               e.preventDefault();
               // tha content multipart is needed when we use files
               try {
-                // const response = await axios.post("http://localhost:3000/users/login", Input);
+                // const response = await axios.post("https://easydoc-backend.onrender.com/users/login", Input);
              
-                const response = await axios.post("http://localhost:3000/users/update-password", Input, {
+                const response = await axios.post("https://easydoc-backend.onrender.com/users/update-password", Input, {
                   withCredentials: true,
                 });
      
