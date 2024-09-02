@@ -26,7 +26,7 @@ const Dashboard = () => {
     
     const fetchTodos = async () =>{
         try {
-            const response = await axios.get("https://easydoc-backend.onrender.com/todo/allTodo",{
+            const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/todo/allTodo`,{
                 withCredentials: true,
             });
             dispatch(setTodo(response.data.data));

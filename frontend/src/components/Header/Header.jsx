@@ -18,7 +18,7 @@ const Header = () => {
     try {
      
 
-      const response = await axios.post("https://easydoc-backend.onrender.com/users/logout", {}, {
+      const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/users/logout`, {}, {
         withCredentials: true,
       });
 

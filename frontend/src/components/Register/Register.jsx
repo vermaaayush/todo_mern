@@ -26,7 +26,7 @@ const Register = () => {
     e.preventDefault();
     // tha content multipart is needed when we use files
     try {
-      const response = await axios.post("https://easydoc-backend.onrender.com/users/register", Input, {
+      const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/users/register`, Input, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
