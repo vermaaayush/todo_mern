@@ -130,22 +130,18 @@ const loginUser = asyncHandler ( async (req,res)=>{
         const {Access_t, Refresh_t} = await generateAccessAndRefreshTokens(user._id.toString())
 
         const user_logged_in = await User.findById(user._id).select("-password -refreshToken")
-
-        const options ={
-          httpOnly: true,
-          secure :true,
-          sameSite: 'None',
         
-        }
-
+        req.session.access_token = Access_t;
+        req.session.refreshtoken = Refresh_t;
+   
         return res.status(200)
-        .cookie("access_token",Access_t,options)
-        .cookie("refreshtoken",Refresh_t,options)
         .json(
           new ApiResponse(
             200,
             {
-              user: user_logged_in,Access_t,Refresh_t
+              user: user_logged_in,
+              access_token: req.session.access_token,
+              refreshtoken: req.session.refreshtoken
             },
             "User logged in successfully!"
           )
@@ -154,30 +150,25 @@ const loginUser = asyncHandler ( async (req,res)=>{
         
 })
 
-const logoutUser = asyncHandler( async (req,res)=>{
-   await User.findByIdAndUpdate(
+const logoutUser = asyncHandler(async (req, res) => {
+  await User.findByIdAndUpdate(
     req.user._id,
     {
-      $set:{refreshToken:undefined}
+      $set: { refreshToken: undefined }
     },
     {
-      new:true
+      new: true
     }
-   )
+  );
 
-   const options = {
-    httpOnly: true,
-    secure: true,
-    sameSite: 'None',
- 
+  req.session.destroy((err) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.status(200).json(new ApiResponse(200, {}, "User logged out successfully!"));
     }
-
-    return res
-    .status(200)
-    .clearCookie('access_token')
-    .clearCookie('refreshtoken')
-    .json(new ApiResponse(200, {}, "User loged out successfully!"))
-})
+  });
+});
 
 const currect_user = asyncHandler ( async (req, res)=>{
     
