@@ -133,7 +133,8 @@ const loginUser = asyncHandler ( async (req,res)=>{
         
         req.session.access_token = Access_t;
         req.session.refreshtoken = Refresh_t;
-   
+        console.log(req.session.access_token);
+        
         return res.status(200)
         .json(
           new ApiResponse(
@@ -243,6 +244,7 @@ const update_password = asyncHandler ( async (req, res)=>{
       user.password = new_pass
       await user.save({validateBeforeSave:false})
 
+     
       return res
       .status(200)
       .json(new ApiResponse(200, {}, "Password Changed Successfully"))
