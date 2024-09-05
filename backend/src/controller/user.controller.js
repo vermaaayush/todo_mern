@@ -134,7 +134,8 @@ const loginUser = asyncHandler ( async (req,res)=>{
         const options = {
           httpOnly: true,            // Prevent access via JavaScript
           secure: true,              // Only send over HTTPS
-          sameSite: 'None'           // Allow cross-site cookie
+          sameSite: 'None',
+          maxAge: 24 * 60 * 60 * 1000,          // Allow cross-site cookie
         };
            
         return res.status(200)
@@ -209,7 +210,8 @@ const refreshAccessToken = asyncHandler ( async (req, res)=>{
       const options = {
         httpOnly: true,            // Prevent access via JavaScript
         secure: true,              // Only send over HTTPS
-        sameSite: 'None'           // Allow cross-site cookie
+        sameSite: 'None',
+        maxAge: 24 * 60 * 60 * 1000           // Allow cross-site cookie
       };
 
      const {Access_t, n_Refresh_t} = await generateAccessAndRefreshTokens(user._id)
