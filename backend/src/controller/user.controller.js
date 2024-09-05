@@ -131,18 +131,20 @@ const loginUser = asyncHandler ( async (req,res)=>{
 
         const user_logged_in = await User.findById(user._id).select("-password -refreshToken")
         
-        req.session.access_token = Access_t;
-        req.session.refreshtoken = Refresh_t;
-        console.log(req.session.access_token);
-        
+        const options = {
+          httpOnly: true,            // Prevent access via JavaScript
+          secure: true,              // Only send over HTTPS
+          sameSite: 'None'           // Allow cross-site cookie
+        };
+           
         return res.status(200)
+        .cookie("accesstoken",Access_t,options)
+        .cookie("refreshtoken",Refresh_t,options)
         .json(
           new ApiResponse(
             200,
             {
-              user: user_logged_in,
-              access_token: req.session.access_token,
-              refreshtoken: req.session.refreshtoken
+              user: loggedInUser,Access_t,Refresh_t
             },
             "User logged in successfully!"
           )
@@ -205,9 +207,10 @@ const refreshAccessToken = asyncHandler ( async (req, res)=>{
       }
       
       const options = {
-        httponly:true,
-        secure: true
-     }
+        httpOnly: true,            // Prevent access via JavaScript
+        secure: true,              // Only send over HTTPS
+        sameSite: 'None'           // Allow cross-site cookie
+      };
 
      const {Access_t, n_Refresh_t} = await generateAccessAndRefreshTokens(user._id)
 
