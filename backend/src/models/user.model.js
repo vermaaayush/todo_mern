@@ -27,6 +27,10 @@ const userSchema = new Schema (
             type: String,
             required: true
           },
+          wishlist: {
+            type: String,
+           
+          },
           avatar:{
             type: String,
             required: true,
